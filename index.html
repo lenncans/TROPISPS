@@ -14,9 +14,19 @@
   --text:#e6ebff;
   --muted:#9aa3c7;
 }
-body{margin:0;font-family:'Orbitron',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+body{margin:0;font-family:'Orbitron',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;position:relative;}
 a{text-decoration:none;}
 h1,h2,h3,h4,h5,h6{margin:0;}
+
+/* PARTICLES CANVAS */
+#particlesCanvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
 
 /* LOADING SCREEN */
 #loadingScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;color:#00ffd5;font-family:'Orbitron',sans-serif;}
@@ -38,8 +48,9 @@ nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,255,178,.6);}70%{box-shadow:0 0 0 12px rgba(0,255,178,0);}100%{box-shadow:0 0 0 0 rgba(0,255,178,0);}}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
 
-/* HERO CARD */
-.hero-card{max-width:380px;margin:40px auto;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-radius:22px;padding:26px;text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.55);position:relative;overflow:hidden;animation:cardPop 1s ease;}
+/* HERO CARD / BERANDA */
+#home{padding:40px 20px;text-align:center;}
+.hero-card{max-width:380px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-radius:22px;padding:26px;text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.55);position:relative;overflow:hidden;animation:cardPop 1s ease;}
 .hero-card::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 120px at top, rgba(0,255,213,.15), transparent);pointer-events:none;}
 @keyframes cardPop{0%{transform:scale(0.9);opacity:0;}100%{transform:scale(1);opacity:1;}}
 .status-title{font-size:18px;margin-bottom:14px;}
@@ -67,15 +78,13 @@ nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 
 .panel li:hover{color:var(--primary);}
 .panel .note{color:#ffc800;font-weight:700;font-size:13px;margin-top:8px;}
 
-/* ICON TROPSIS PS */
+/* ICONS */
 .tropis-icon{position:fixed;width:64px;height:64px;object-fit:contain;opacity:.15;z-index:0;animation:floatIcon 6s ease-in-out infinite alternate;}
 .top-left{top:40px;left:20px;}
 .top-right{top:80px;right:20px;}
 .bottom-left{bottom:80px;left:40px;}
 .bottom-right{bottom:40px;right:40px;}
 @keyframes floatIcon{0%{transform:translateY(0px) rotate(0deg);}50%{transform:translateY(-10px) rotate(10deg);}100%{transform:translateY(0px) rotate(0deg);}}
-
-/* ICON BOOKMARK */
 .bookmark-icon{position:fixed;width:48px;height:48px;object-fit:contain;opacity:.15;z-index:0;animation:floatBookmark 5s ease-in-out infinite alternate;}
 @keyframes floatBookmark{0%{transform:translateY(0px) rotate(0deg);}50%{transform:translateY(-10px) rotate(8deg);}100%{transform:translateY(0px) rotate(0deg);}}
 .bookmark-icon.top-left{top:20px;left:80px;}
@@ -90,6 +99,8 @@ nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 
 </style>
 </head>
 <body>
+
+<canvas id="particlesCanvas"></canvas>
 
 <!-- LOADING SCREEN -->
 <div id="loadingScreen">
@@ -124,11 +135,14 @@ nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 
   </div>
 </nav>
 
-<!-- HERO CARD -->
-<div class="hero-card status-card">
-  <div class="status-title">SERVER STATUS</div>
-  <div id="serverStatus">Online</div>
-</div>
+<!-- BERANDA -->
+<section id="home">
+  <div class="hero-card">
+    <div class="status-title">SERVER STATUS</div>
+    <div id="serverStatus">Online</div>
+    <div class="status-desc">TROPIS PS siap dimainkan sekarang!</div>
+  </div>
+</section>
 
 <!-- PEJABAT SERVER -->
 <section id="staff" class="section">
@@ -152,23 +166,13 @@ nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 
   </div>
 </section>
 
-<!-- STAFF RULES -->
-<section id="staff-rules" class="section">
-  <h2>🛡️ Official Staff Rules</h2>
-  <p class="lead">Semua staff wajib mematuhi aturan berikut untuk menjaga server tetap aman & teratur</p>
+<!-- Staff Rules & Player Rules bisa ditambahkan di bawah ini sama seperti sebelumnya -->
 
-  <div class="rule-category">
-    <button class="accordion">📜 Pasal 1: Mengelola Akun</button>
-    <div class="panel">
-      <ul>
-        <li>🔹 <b>Ayat 1: Jual Akun</b> Jika akun dijual tanpa sepengetahuan petinggi server, dianggap ❌ ilegal & tidak akan dibantu jika terkena scam.</li>
-        <li>🔹 <b>Ayat 2: Penggunaan Akun</b> Jangan abuse / troll orang untuk kesenangan pribadi. ❌ Merugikan orang lain = sanksi berlaku.</li>
-        <li>🔹 <b>Ayat 3: Peminjaman Akun</b> Dilarang meminjamkan akun ke player lain. ❌ Pelanggaran dapat mengakibatkan sanksi langsung.</li>
-      </ul>
-    </div>
-  </div>
-
-<!-- SELANJUTNYA AKAN MELIPUTI PASAL 2-5 STAFF RULES DAN RULES PLAYER -->
+<!-- FOOTER -->
+<footer class="site-footer">
+  &copy; 2026 TROPIS PS. All Rights Reserved.<br>
+  Coded by <b>Xhams</b>
+</footer>
 
 <script>
 // LOADING BAR
@@ -188,20 +192,20 @@ const interval=setInterval(()=>{
 },200);
 
 // ACCORDION
-document.querySelectorAll(".accordion").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    btn.classList.toggle("active");
-    const panel=btn.nextElementSibling;
-    if(panel.style.display==="block"){panel.style.display="none";}
-    else{panel.style.display="block";}
-  });
+document.querySelectorAll(".accordion").forEach(a=>{
+  a.addEventListener("click",()=>{a.classList.toggle("active");let panel=a.nextElementSibling;panel.style.display=(panel.style.display==="block")?"none":"block";});
 });
-</script>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  &copy; 2026 TROPIS PS. All Rights Reserved.<br>
-  Coded by <b>XHams</b>
-</footer>
+// PARTICLES
+const canvas=document.getElementById("particlesCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+let particles=[];
+for(let i=0;i<120;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.8,dy:(Math.random()-0.5)*0.8});}
+function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(0,255,213,0.6)";ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;});requestAnimationFrame(animate);}
+animate();
+</script>
 </body>
-</html>
+                                                                        </html>
