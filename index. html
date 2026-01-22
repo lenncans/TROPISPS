@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TROPIS PS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#070b14;
+  --card:#0e1626;
+  --primary:#00ffd5;
+  --secondary:#4f8cff;
+  --text:#e6ebff;
+  --muted:#9aa3c7;
+  --danger:#ff4d6d;
+  --pixel-block:url('https://raw.githubusercontent.com/GTAssets/tiles/main/block.png');
+  --pixel-gem:url('https://raw.githubusercontent.com/GTAssets/icons/main/gem.png');
+}
+
+body{margin:0;font-family:'Orbitron',sans-serif;background:var(--bg);color:var(--text);}
+
+/* ================= LOADING BAR ================= */
+#loadingScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;color:#00ffd5;font-family:'Orbitron',sans-serif;}
+.loader-bar{width:250px;height:14px;border-radius:10px;background:rgba(0,255,213,0.15);overflow:hidden;margin-bottom:16px;box-shadow:0 0 12px rgba(0,255,213,.4) inset;}
+.loader-bar .progress{height:100%;width:0%;background:#00ffd5;border-radius:10px;box-shadow:0 0 12px #00ffd5;transition:width 0.4s ease;}
+#loadingScreen p{font-size:14px;color:#00ffd5;letter-spacing:1px;}
+
+/* ================= NAVBAR ================= */
+nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 24px;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 16px rgba(0,0,0,.5);}
+.nav-inner{display:flex;align-items:center;gap:20px;}
+.brand{font-weight:700;font-size:20px;display:flex;align-items:center;}
+.brand .navbar-badge{margin-left:12px;font-size:12px;padding:2px 10px;border-radius:999px;font-weight:700;letter-spacing:.5px;transition:all .3s ease;}
+.nav a{color:var(--text);text-decoration:none;font-weight:500;transition:.3s;}
+.nav a:hover{color:var(--primary);}
+
+/* BADGE ANIMASI */
+.badge-online{color:#00ffb2;background:rgba(0,255,178,.15);box-shadow:0 0 0 rgba(0,255,178,.6);animation:pulse 1.6s infinite;}
+.badge-offline{color:#ff4d6d;background:rgba(255,77,109,.15);animation:none;}
+.badge-maintenance{color:#ffc800;background:rgba(255,200,0,.15);animation:blink 1.2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,255,178,.6);}70%{box-shadow:0 0 0 12px rgba(0,255,178,0);}100%{box-shadow:0 0 0 0 rgba(0,255,178,0);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ================= HERO CARD ================= */
+.hero-card{max-width:380px;margin:40px auto;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-radius:22px;padding:26px;text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.55);position:relative;overflow:hidden;}
+.hero-card::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 120px at top, rgba(0,255,213,.15), transparent);pointer-events:none;}
+.status-title{font-size:18px;margin-bottom:14px;}
+.status-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-weight:800;font-size:14px;letter-spacing:.6px;}
+.status-desc{margin-top:14px;font-size:14px;color:var(--muted);}
+
+/* ================= PEJABAT SERVER ================= */
+.section{max-width:960px;margin:40px auto;padding:0 20px;}
+.section h2{font-size:22px;margin-bottom:8px;}
+.section .lead{font-size:14px;color:var(--muted);margin-bottom:16px;}
+.staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;}
+.staff-card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px;text-align:center;font-weight:700;position:relative;transition:all .3s ease;box-shadow:0 12px 30px rgba(0,0,0,.3);cursor:default;}
+.staff-card .role{display:block;font-size:12px;color:var(--muted);margin-top:4px;}
+.staff-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.5);}
+.presidium{border-left:4px solid #ff3d00;}
+.vice{border-left:4px solid #ff6d00;}
+.ambassador{border-left:4px solid #ffbb00;}
+.tech{border-left:4px solid #00ffea;}
+.designer{border-left:4px solid #4f8cff;}
+.staff{border-left:4px solid #9aa3c7;}
+
+/* ================= RULES ACCORDION ================= */
+.rule-category{margin-bottom:20px;border-radius:18px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.35);background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);}
+.accordion{cursor:pointer;padding:16px 20px;width:100%;text-align:left;outline:none;font-size:16px;font-weight:700;color:var(--primary);background:rgba(0,0,0,.1);border:none;transition:background .3s ease;}
+.accordion:hover{background:rgba(0,0,0,.2);}
+.panel{padding:0 20px;background:rgba(0,0,0,.05);display:none;overflow:hidden;transition:max-height .3s ease;}
+.panel ul{margin:12px 0;padding-left:20px;}
+.panel li{margin-bottom:8px;line-height:1.5;}
+.panel .note{color:#ffc800;font-weight:700;font-size:13px;margin-top:8px;}
+
+/* ================= FOOTER ================= */
+.site-footer{width:100%;padding:16px 0;background:linear-gradient(180deg, rgba(0,0,0,.8), rgba(0,0,0,.9));text-align:center;color:var(--muted);font-size:13px;font-weight:500;border-top:1px solid rgba(255,255,255,.08);box-shadow:0 -4px 12px rgba(0,0,0,.25);}
+.site-footer b{color:var(--primary);}
+@media (max-width:600px){.site-footer{font-size:12px;padding:12px 0;}}
+
+/* ================= PIXEL + ICON ================= */
+.pixel-decor,.tropis-icon{position:fixed;width:64px;height:64px;opacity:.15;z-index:0;}
+.pixel-decor{background-size:cover;image-rendering:pixelated;}
+.top-left{top:40px;left:20px;}
+.top-right{top:80px;right:20px;}
+.bottom-left{bottom:80px;left:40px;}
+.bottom-right{bottom:40px;right:40px;}
+.tropis-icon{object-fit:contain;animation:floatIcon 6s ease-in-out infinite alternate;}
+@keyframes floatIcon{0%{transform:translateY(0px) rotate(0deg);}50%{transform:translateY(-10px) rotate(10deg);}100%{transform:translateY(0px) rotate(0deg);}}
+@media(max-width:600px){.pixel-decor,.tropis-icon{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loader-bar"><div class="progress"></div></div>
+  <p>Memuat TROPIS PS...</p>
+</div>
+
+<!-- PIXEL DECOR & ICON -->
+<div class="pixel-decor top-left" style="background-image:var(--pixel-block)"></div>
+<div class="pixel-decor top-right" style="background-image:var(--pixel-block)"></div>
+<div class="pixel-decor bottom-left" style="background-image:var(--pixel-block)"></div>
+<div class="pixel-decor bottom-right" style="background-image:var(--pixel-block)"></div>
+<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon top-left">
+<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon top-right">
+<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon bottom-left">
+<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon bottom-right">
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      TROPIS PS
+      <span id="navbarStatus" class="navbar-badge badge-online">🟢 ONLINE</span>
+    </div>
+    <div>
+      <a href="#home">Beranda</a>
+      <a href="#tutorial">Tutorial</a>
+      <a href="#store">Toko Role</a>
+      <a href="#staff">Pejabat Server</a>
+      <a href="#rules">Rules</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO CARD -->
+<div class="hero-card status-card">
+  <div class="status-title">SERVER STATUS</div>
+  <div id="serverStatus"></div>
+</div>
+
+<!-- PEJABAT SERVER -->
+<section id="staff" class="section">
+  <h2>Pejabat Server</h2>
+  <p class="lead">Tim yang mengelola TROPIS PS dengan penuh dedikasi</p>
+  <div class="staff-grid">
+    <div class="staff-card presidium">BiiCzX <span class="role">Presiden</span></div>
+    <div class="staff-card vice">Hans <span class="role">Wakil-Presiden</span></div>
+    <div class="staff-card ambassador">Pakdee <span class="role">Duta-Besar</span></div>
+    <div class="staff-card ambassador">XRef <span class="role">Duta-Besar</span></div>
+    <div class="staff-card tech">Chandra <span class="role">Teknisi</span></div>
+    <div class="staff-card designer">Voker <span class="role">Designer</span></div>
+    <div class="staff-card designer">Rell <span class="role">Designer</span></div>
+    <div class="staff-card designer">Snow <span class="role">Designer</span></div>
+    <div class="staff-card staff">Igoyy <span class="role">Staff</span></div>
+    <div class="staff-card staff">XHams <span class="role">Staff</span></div>
+    <div class="staff-card staff">Nexuso <span class="role">Staff</span></div>
+    <div class="staff-card staff">Dudung <span class="role">Staff</span></div>
+    <div class="staff-card staff">TuanMuda <span class="role">Staff</span></div>
+    <div class="staff-card staff">wann <span class="role">Staff</span></div>
+  </div>
+</section>
+
+<!-- RULES ACCORDION -->
+<section id="rules" class="section">
+  <h2>📜 Rules TROPIS PS</h2>
+  <p class="lead">Semua pemain wajib mematuhi aturan berikut untuk kenyamanan bersama</p>
+
+  <div class="rule-category">
+    <button class="accordion">💬 Rules In Chat</button>
+    <div class="panel">
+      <ul>
+        <li>💬 Tidak berkata kasar (yang biasa-biasa aja DIUSAHAKAN JANGAN)</li>
+        <li>🙅 Tidak membully player lain, menindas, mengancam dan melecehkan</li>
+        <li>🚫 Dilarang menyebarkan P0rno🔞, Judol, Virtex</li>
+        <li>🤝 Bersikap sopan terhadap mods, owner, dan player-player lain</li>
+      </ul>
+      <p class="note">⚠️ APA BILA RULES INI DILANGGAR SANGSI NYA BISA LEBIH DARI INI!!!</p>
+    </div>
+  </div>
+
+  <div class="rule-category">
+    <button class="accordion">🎮 Rules In Game</button>
+    <div class="panel">
+      <ul>
+        <li>🌐 Tidak Melakukan Spam Pada <b>World-World Public</b></li>
+        <li>🚫 Dilarang <b>ngeban, ngemute, ngerusuh, ngetape</b> tanpa alasan jelas</li>
+        <li>🙅 Tidak melecehkan, menindas, menjelek-jelekan nama baik player</li>
+        <li>🛡 Dilarang <b>KERAS</b> menggunakan nick yang mengatas namakan mods atau player lain</li>
+        <li>⚙️ Dilarang <b>KERAS</b> menggunakan proxy, genta, script auto</li>
+        <li>💰 Dilarang <b>KERAS</b> jual/beli lock di : World public, sb, D. L. L</li>
+        <li>❌ Dilarang <b>KERAS</b> Mencuri, Mengakui hak orang lain, scamming, Tele, Berbohong</li>
+      </ul>
+      <p class="note">⚠️ RULES INI BERLAKU UNTUK SEMUA ORANG YANG MEMASUKI SERVER INI</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  &copy; 2026 TROPIS PS. All Rights Reserved.<br>
+  Coded by <b>Xhams</b>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+  // LOADING BAR
+  const progress = document.querySelector("#loadingScreen .progress");
+  let width = 0;
+  const interval = setInterval(()=>{
+    width += Math.random()*10;
+    if(width>=100) width=100;
+    progress.style.width = width+"%";
+    if(width>=100){
+      clearInterval(interval);
+      const loader = document.getElementById("loadingScreen");
+      loader.style.transition="opacity 0.6s ease"; loader.style.opacity=0;
+      setTimeout(()=>{ loader.style.display="none";},600);
+    }
+  },200);
+
+  // ACCORDION
+  const accordions=document.querySelectorAll(".accordion");
+  accordions.forEach(acc=>{acc.addEventListener("click",function(){
+    this.classList.toggle("active");
+    const panel=this.nextElementSibling;
+    panel.style.display=(panel.style.display==="block")?"none":"block";
+  })});
+
+  // SERVER STATUS
+  const SERVER={online:true, maintenance:false, version:"Latest"};
+  function renderServerStatus(){
+    const el=document.getElementById("serverStatus");
+    const badge=document.getElementById("navbarStatus");
+    if(!el||!badge)return;
+    if(SERVER.maintenance){
+      el.innerHTML='<div class="status-badge badge-maintenance">🛠 MAINTENANCE</div><div class="status-desc">Server sedang maintenance.<br>Mohon tunggu update selanjutnya.</div>';
+      badge.textContent="🛠 MAINTENANCE"; badge.className="navbar-badge badge-maintenance";
+    } else{
+      el.innerHTML='<div class="status-badge '+(SERVER.online?'badge-online':'badge-offline')+'">'+(SERVER.online?'🟢 ONLINE':'🔴 OFFLINE')+'</div><div class="status-desc">Version: <b>'+SERVER.version+'</b></div>';
+      badge.textContent=SERVER.online?'🟢 ONLINE':'🔴 OFFLINE';
+      badge.className=SERVER.online?"navbar-badge badge-online":"navbar-badge badge-offline";
+    }
+  }
+  renderServerStatus();
+</script>
+
+</body>
+</html>
