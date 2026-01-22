@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TROPIS PS</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/tropis-icon.jpg" type="image/png">
 <style>
 :root {
   --bg:#070b14;
@@ -99,15 +100,15 @@ nav{width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:12px 
 </div>
 
 <!-- ICONS -->
-<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon top-left" alt="TROPIS PS Icon">
-<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon top-right" alt="TROPIS PS Icon">
-<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon bottom-left" alt="TROPIS PS Icon">
-<img src="https://files.catbox.moe/435zuu.jpg" class="tropis-icon bottom-right" alt="TROPIS PS Icon">
+<img src="assets/tropis-icon.jpg" class="tropis-icon top-left" alt="TROPIS PS Icon">
+<img src="assets/tropis-icon.jpg" class="tropis-icon top-right" alt="TROPIS PS Icon">
+<img src="assets/tropis-icon.jpg" class="tropis-icon bottom-left" alt="TROPIS PS Icon">
+<img src="assets/tropis-icon.jpg" class="tropis-icon bottom-right" alt="TROPIS PS Icon">
 
-<img src="https://files.catbox.moe/435zuu.jpg" class="bookmark-icon top-left" alt="Bookmark Icon">
-<img src="https://files.catbox.moe/435zuu.jpg" class="bookmark-icon top-right" alt="Bookmark Icon">
-<img src="https://files.catbox.moe/435zuu.jpg" class="bookmark-icon bottom-left" alt="Bookmark Icon">
-<img src="https://files.catbox.moe/435zuu.jpg" class="bookmark-icon bottom-right" alt="Bookmark Icon">
+<img src="assets/bookmark-icon.jpg" class="bookmark-icon top-left" alt="Bookmark Icon">
+<img src="assets/bookmark-icon.jpg" class="bookmark-icon top-right" alt="Bookmark Icon">
+<img src="assets/bookmark-icon.jpg" class="bookmark-icon bottom-left" alt="Bookmark Icon">
+<img src="assets/bookmark-icon.jpg" class="bookmark-icon bottom-right" alt="Bookmark Icon">
 
 <!-- NAVBAR -->
 <nav>
@@ -212,4 +213,14 @@ const interval=setInterval(()=>{
 },200);
 
 // ACCORDION
-document.querySelectorAll(".accordion
+document.querySelectorAll(".accordion").forEach(button=>{
+  button.addEventListener("click",()=>{
+    button.classList.toggle("active");
+    const panel=button.nextElementSibling;
+    if(panel.style.display==="block"){panel.style.display="none";}
+    else{panel.style.display="block";}
+  });
+});
+</script>
+</body>
+  </html>
